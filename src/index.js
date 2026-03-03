@@ -21,20 +21,7 @@ window.addEventListener('unhandledrejection', (event) => {
   }
 });
 
-// Touch diagnostics: log which element receives touch events on mobile
-// (temporary — remove after debugging)
-function logTouchEvent(e) {
-  try {
-    const t = e.target;
-    const desc = t && (t.id || t.className || t.tagName);
-    console.debug('Touch event:', e.type, 'target=', desc, t);
-  } catch (err) {
-    console.error('Error logging touch event', err);
-  }
-}
-window.addEventListener('touchstart', logTouchEvent, { capture: true });
-window.addEventListener('touchmove', logTouchEvent, { capture: true });
-window.addEventListener('touchend', logTouchEvent, { capture: true });
+// Note: touch diagnostics removed after applying overlay fix
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
