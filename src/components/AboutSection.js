@@ -2,7 +2,7 @@ import React from 'react';
 import hero from '../assets/hero.jpg';
 import hero1 from '../assets/hero1.jpg';
 
-function About() {
+function AboutSection() {
   return (
     <section className="about-section">
       <div className="container about-container">
@@ -34,4 +34,4 @@ function About() {
   );
 }
 
-export default About;
+export default AboutSection;

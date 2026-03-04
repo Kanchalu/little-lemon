@@ -40,6 +40,9 @@ function Footer() {
           </ul>
         </div>
       </div>
+      <div className="footer-copy">
+        <p>Little Lemon © All rights reserved 2026</p>
+      </div>
     </footer>
   );
 }

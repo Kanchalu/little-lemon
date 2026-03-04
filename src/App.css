@@ -111,6 +111,15 @@ img.logo {
   color: #495E57;
 }
 
+.nav-menu {
+  display: flex;
+  justify-content: space-between; /* This pushes the Logo left and Links right */
+  align-items: center;
+  width: 100%;
+  max-width: 1496px; /* Your smart width! */
+  margin: 0 auto;
+}
+
 /* --- 4. THE HERO WRAPPER --- */
 .hero-wrapper {
   grid-column: 1 / -1;
@@ -713,6 +722,20 @@ img.logo {
     margin-bottom: 10px;    /* Easier to tap links with a thumb */
     font-size: 16px;
   }
+}
+
+/* Copyright line */
+.footer-copy {
+  max-width: 1496px;
+  margin: 20px auto 0 auto;
+  padding: 12px 40px;
+  text-align: center;
+}
+.footer-copy p {
+  color: #EDEFEE;
+  opacity: 0.9;
+  font-size: 14px;
+  margin: 0;
 }
 
 /* --- MOBILE VIEW --- */
