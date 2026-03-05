@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // 1. Import Link
 
 function Card({ image, title, price, description }) {
   return (
@@ -12,9 +13,11 @@ function Card({ image, title, price, description }) {
           <span className="card-price">{price}</span>
         </div>
         <p>{description}</p>
-        <button className="delivery-btn">
+        
+        {/* 2. Changed button to Link and pointed it to /order */}
+        <Link to="/order" className="delivery-btn" style={{ textDecoration: 'none' }}>
           Order a delivery <span className="bike-icon">🏍️</span>
-        </button>
+        </Link>
       </div>
     </article>
   );

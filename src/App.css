@@ -25,6 +25,20 @@ html, body {
   font-family: 'Karla', sans-serif;
 }
 
+/* --- FIXED HEADER STYLES --- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; /* Keeps the background solid so text doesn't bleed through */
+  z-index: 1000; /* Ensures the header stays on top of all other content */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle drop shadow when scrolling */
+}
+
+main {
+  padding-top: 100px; /* Adjust this number if your header is taller or shorter */
+}
 /* --- 2. STEP 2: HEADINGS & PARAGRAPHS (General Elements) --- */
 h1 {
   font-family: 'Markazi Text', serif;
@@ -173,6 +187,16 @@ img.logo {
   max-width: 420px;
 }
 
+/* Find your hero content paragraph */
+.hero-content p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #EDEFEE; /* Little Lemon Light Grey */
+  
+  /* --- ADD THIS LINE --- */
+  margin-bottom: 40px; 
+}
+
 /* --- 4. THE IMAGE (RESPONSIVE X & Y) --- */
 .hero-image {
   grid-column: 8 / 13;
@@ -212,8 +236,28 @@ img.logo {
   transition: 0.2s ease-in-out;
 }
 
-.yellow-btn:hover {
-  background-color: #EE9972;
+.cta-button {
+  background-color: #F4CE14; /* Little Lemon Yellow */
+  color: #333;
+  padding: 15px 30px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  
+  /* --- ADD THIS FOR SMOOTHNESS --- */
+  transition: all 0.3s ease-in-out; 
+}
+
+/* --- THE HOVER EFFECT --- */
+.cta-button:hover {
+  background-color: #495E57; /* Changes to Little Lemon Green */
+  color: #EDEFEE;            /* Changes text to Light Grey */
+  transform: scale(1.05);    /* Makes the button grow 5% larger */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds a "lifted" shadow */
 }
 
 /* --- Specials Section Layout --- */
@@ -311,6 +355,157 @@ img.logo {
   line-height: 1.5;
 }
 
+/* --- BOOKING FORM STYLES --- */
+.reservations-page {
+  background-color: #495E57; /* Little Lemon Green */
+  color: white;
+  padding: 80px 20px;
+}
+
+.reservations-page h1 {
+  color: #F4CE14; /* Little Lemon Yellow */
+  margin-bottom: 10px;
+}
+
+.reservations-page p {
+  margin-bottom: 40px;
+  font-size: 1.2rem;
+}
+
+.booking-form {
+  display: grid;
+  max-width: 400px;
+  gap: 20px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #333;
+  text-align: left;
+}
+
+.booking-form label {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  margin-top: 15px; /* Adds breathing room between fields */
+  display: block; /* Forces the label to sit neatly above the input */
+  color: #333;
+}
+
+/* This single block now targets EVERY input type across Step 1 and Step 2 */
+.booking-form input[type="text"],
+.booking-form input[type="email"],
+.booking-form input[type="tel"],
+.booking-form input[type="date"],
+.booking-form input[type="number"],
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box; 
+  background-color: #fff;
+}
+
+/* Make sure the Special Requests box can be resized by the user */
+.booking-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* The Little Lemon Yellow Button */
+.booking-form .submit-button {
+  background-color: #F4CE14;
+  color: black;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 15px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.booking-form .submit-button:hover {
+  background-color: #e3be12; /* Slightly darker yellow on hover */
+}
+
+/* --- MULTI-STEP FORM ADDITIONS --- */
+.booking-form h2 {
+  color: #495E57; /* Little Lemon Green */
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Button Group for Step 2 (Back and Confirm) */
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.back-button {
+  flex: 1;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #495E57;
+  background-color: transparent;
+  color: #495E57;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #EDEFEE; /* Light grey hover */
+}
+
+/* Make the submit button wider when next to the back button */
+.button-group .submit-button.flex-2 {
+  flex: 2;
+  margin-top: 0; 
+}
+
+/* Step 3 Receipt Box */
+.confirmation-box {
+  background-color: #EDEFEE; /* Light grey */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  margin: 20px 0;
+  color: #333;
+}
+
+.confirmation-box h3 {
+  margin-top: 0;
+  color: #495E57;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.confirmation-box p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.submit-button.full-width {
+  width: 100%;
+  margin-top: 10px;
+}
+
 @media (max-width: 768px) {
   .specials-grid { grid-template-columns: 1fr; }
   .testimonial-grid { grid-template-columns: 1fr; }
@@ -332,11 +527,22 @@ img.logo {
 .delivery-btn {
   background: none;
   border: none;
-  font-weight: 700;
+  color: #333333;
+  font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 20px;
-  text-align: left;
-  padding: 0;
+  display: inline-block; /* Essential for Links to respect padding/margins */
+  margin-top: 15px;
+  transition: transform 0.2s ease;
+}
+
+.delivery-btn:hover {
+  transform: scale(1.05);
+  color: #495E57; /* Little Lemon Green */
+}
+
+.bike-icon {
+  margin-left: 10px;
 }
 
 /* --- THE CARD CONTAINER --- */
@@ -348,6 +554,66 @@ img.logo {
   flex-direction: column;
   height: 100%; /* Ensures all cards in the grid are the same height */
   transition: 0.3s ease;
+}
+
+/* --- ABOUT SECTION --- */
+.about-section {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 80px 0;
+}
+
+/* --- THE IMAGE STACK (REVERSED TO MATCH PHOTO) --- */
+.about-image-container {
+  flex: 1;
+  position: relative;
+  height: 480px; 
+  min-width: 450px; /* Increased slightly to accommodate the right shift */
+}
+
+.about-image-container img {
+  width: 280px;  
+  height: 380px; 
+  object-fit: cover;
+  border-radius: 16px;
+  position: absolute;
+  /* Soft shadow to match the clean look of your screenshot */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* This is the woman in your screenshot (The Front Image) */
+.about-img-front {
+  bottom: 0;
+  left: 0;
+  z-index: 2; /* STAYS IN FRONT */
+  border: 4px solid white; 
+}
+
+/* This is the man in your screenshot (The Back Image) */
+.about-img-back {
+  top: 0;       /* SHIFTED UP */
+  right: 20px;  /* SHIFTED TO THE RIGHT */
+  z-index: 1;   /* STAYS BEHIND */
+}
+
+/* --- MOBILE VIEW --- */
+@media (max-width: 768px) {
+  .about-section {
+    flex-direction: column;
+    padding: 60px 20px;
+    gap: 120px;
+  }
+  
+  .about-image-container {
+    min-width: auto;
+    width: 100%;
+    height: 400px;
+  }
+  
+  .about-image-container img {
+    width: 200px;
+    height: 280px;
+  }
 }
 
 /* --- THE IMAGE --- */
@@ -539,29 +805,132 @@ img.logo {
   line-height: 1.4;
 }
 
-/* --- ABOUT SECTION --- */
-.about-section {
-  width: 100%;
-  max-width: 1496px;
-  margin: 100px auto;
-  padding: 60px 0;
+/* --- Confirmation Page Layout --- */
+.confirmation-page {
+  padding: 160px 20px 100px; /* Space for fixed header */
+  display: flex;
+  flex-direction: column;    /* Forces title to stay on top */
+  align-items: center;       /* Centers everything horizontally */
+  min-height: 70vh;         /* Ensures footer stays at bottom */
+  text-align: center;
 }
 
+.confirmation-content {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;    /* Extra insurance for the vertical stack */
+  align-items: center;
+}
+
+/* --- Typography --- */
+.confirmation-page h1 {
+  font-family: 'Markazi Text', serif;
+  font-size: 4.5rem;         /* Match Hero title size */
+  color: #F4CE14;            /* Brand Yellow */
+  margin-bottom: 20px;
+}
+
+.confirmation-page p {
+  font-family: 'Karla', sans-serif;
+  font-size: 1.25rem;        /* Correct Karla size */
+  color: #495E57;            /* Brand Green */
+  line-height: 1.5;
+  margin: 0;                 /* Removes extra gaps between p tags */
+}
+
+/* Fix for the button size */
+.confirmation-page .delivery-btn {
+  width: fit-content;
+  padding: 10px 30px;
+}
+/* --- ABOUT SECTION --- */
+/* --- ABOUT SECTION: THE "ABOUT.JPG" LOOK --- */
+.about-section {
+  display: flex;
+  padding: 100px 15%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px; /* Increased gap to give images room to spread out */
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h1 {
+  font-family: 'Markazi Text', serif;
+  font-size: 64px;
+  color: #F4CE14;
+  margin: 0;
+}
+
+.about-text h2 {
+  font-family: 'Markazi Text', serif;
+  font-size: 40px;
+  color: #333333;
+  margin-top: -10px;
+}
+
+.about-text p {
+  font-family: 'Karla', sans-serif;
+  font-size: 18px;
+  color: #495E57;
+  line-height: 1.5;
+  margin-top: 20px;
+  max-width: 450px;
+}
+
+/* --- THE PRECISE IMAGE OVERLAP --- */
+.about-image-container {
+  flex: 1;
+  position: relative;
+  height: 400px; /* Controls the vertical box */
+  min-width: 480px; /* Prevents the images from collapsing into the text */
+}
+
+.about-image-container img {
+  width: 270px;  /* Sized to match your goal image */
+  height: 340px; 
+  object-fit: cover;
+  border-radius: 16px;
+  position: absolute;
+}
+
+/* THE FRONT IMAGE (Left) */
+.about-img-front {
+  z-index: 2;
+  top: 50px;    /* Pushed down slightly */
+  left: 0;      /* Stuck to the left side */
+  border: 4px solid white; /* Essential for that overlap cut */
+  box-shadow: -10px 10px 20px rgba(0,0,0,0.1);
+}
+
+/* THE BACK IMAGE (Right & Higher) */
+.about-img-back {
+  z-index: 1;
+  top: 0;       /* Higher up than the front image */
+  right: 0;     /* Pushed all the way to the right */
+  box-shadow: 10px 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Use flex instead of grid to keep text and images side-by-side */
 .about-container {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  align-items: flex-start;
-  gap: 20px;
+  display: flex !important; 
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
 }
 
 .about-content {
-  grid-column: 1 / 7; /* Left side */
+  flex: 1;
 }
 
 .about-title {
   font-family: 'Markazi Text', serif;
   font-size: 64px;
-  color: #F4CE14; /* Brand Yellow */
+  color: #F4CE14;
   margin: 0;
 }
 
@@ -570,7 +939,7 @@ img.logo {
   font-size: 40px;
   color: #333333;
   margin-top: -10px;
-}
+} 
 
 .about-text {
   font-family: 'Karla', sans-serif;
@@ -580,6 +949,7 @@ img.logo {
   margin-top: 30px;
   max-width: 400px;
 }
+
 
 /* --- THE IMAGE STACK LOGIC --- */
 .about-image-stack {
@@ -610,6 +980,117 @@ img.logo {
   z-index: 1; /* Sits behind */
 }
 
+.about-section {
+  display: flex; /* This is for the Text vs the Image Container */
+  padding: 100px 15%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 80px;
+  background-color: #ffffff;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h1 {
+  font-family: 'Markazi Text', serif;
+  font-size: 4rem;
+  color: #F4CE14; /* Little Lemon Yellow */
+  margin: 0;
+}
+
+.about-text h2 {
+  font-family: 'Markazi Text', serif;
+  font-size: 2.5rem;
+  color: #495E57; /* Little Lemon Green */
+  margin-top: -15px;
+}
+
+.about-text p {
+  font-family: 'Karla', sans-serif;
+  font-size: 1.2rem;
+  color: #333333;
+  margin-top: 20px;
+  max-width: 400px;
+}
+
+/* --- THE IMAGE OVERLAP LOGIC --- */
+.about-image-container {
+  flex: 1;
+  position: relative; /* Essential: This is the anchor */
+  height: 480px;      /* Essential: Gives the absolute images height */
+  min-width: 450px;   /* Essential: Prevents the box from collapsing */
+  display: block;     /* Force block to allow absolute children to float */
+}
+
+.about-image-container img {
+  width: 280px;       /* Your exact width */
+  height: 380px;      /* Your exact height */
+  object-fit: cover;
+  border-radius: 16px;
+  position: absolute; /* Essential: Takes them out of the list flow */
+}
+
+.about-img-back {
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+/* THE FRONT IMAGE (Lower and Left) */
+.about-img-front {
+  bottom: 0;
+  left: 0; /* Shifted right to create the overlap */
+  z-index: 2;         /* Pulls it to the very front */
+  border: 4px solid white; 
+  box-shadow: -10px 10px 20px rgba(0,0,0,0.2);
+}
+
+.about-images {
+position: relative;
+width: 350px;
+height: 400px;
+}
+
+.about-img {
+width: 250px;
+height: 320px;
+object-fit: cover;
+border-radius: 16px;
+position: absolute;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+transition: transform 0.3s ease;
+}
+
+.img-top {
+top: 0;
+left: 0;
+z-index: 2;
+}
+
+.img-bottom {
+bottom: 0;
+right: 0;
+z-index: 1;
+}
+
+.about-img:hover {
+transform: scale(1.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .about-section {
+    flex-direction: column;
+    padding: 50px 5%;
+  }
+  
+  .about-image-container {
+    width: 100%;
+    height: 400px;
+  }
+}
 /* --- FOOTER SECTION --- */
 .footer-background {
   background-color: #495E57; /* Brand Dark Green */
@@ -968,4 +1449,60 @@ html, body, #root, .App {
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch; /* smooth native scrolling on iOS */
   touch-action: auto;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Mobile View for About Section --- */
+@media (max-width: 768px) {
+  .about-section {
+    flex-direction: column; /* Stacks text on top of images */
+    padding: 40px 20px;
+    text-align: center;      /* Centers the text for mobile aesthetics */
+    gap: 120px;             /* Extra gap to make room for overlapping images */
+  }
+
+  .about-text p {
+    margin: 20px auto;      /* Centers the paragraph block */
+    max-width: 100%;
+  }
+
+  .about-image-container {
+    width: 100%;
+    height: 350px;          /* Fixed height so images don't collapse */
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .about-image-container img {
+    width: 180px;           /* Slightly smaller images for mobile */
+    height: 250px;
+  }
+
+ /* THE BACK IMAGE (Higher and Right) */
+.about-img-back {
+  top: 0;
+  right: 50px;              /* Shifted right to create the overlap */
+  z-index: 5;         /* Pushes it behind */
+  box-shadow: 10px 10px 20px rgba(0,0,0,0.15);
+}
+
+  .about-img-front {
+    bottom: 0;
+    left: 10%;              /* Positions relative to the center */
+  }
+}
+
+@media (max-width: 768px) {
+  .specials-grid {
+    grid-template-columns: 1fr; /* Force one card per row */
+  }
+  .specials-header {
+    flex-direction: column;
+    gap: 20px;
+  }
 }
