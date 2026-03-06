@@ -36,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/runtime": "^7.28.6",
+    "style-loader": "^4.0.0"
   }
 }

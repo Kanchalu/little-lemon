@@ -5,7 +5,6 @@ import salad from '../assets/salad.jpg';
 import bruschetta from '../assets/bruschetta.jpg';
 import dessert from '../assets/dessert.jpg';
 
-// Our menu database
 const menuItems = [
   {
     id: 1,
@@ -30,7 +29,6 @@ const menuItems = [
   }
 ];
 
-// 1. Make sure to accept isLoggedIn as a prop here!
 function Order({ isLoggedIn }) { 
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false); 
@@ -38,6 +36,7 @@ function Order({ isLoggedIn }) {
 
   const addToCart = (item) => {
     setCart([...cart, item]);
+    // A11y: Standard alerts are okay, but status messages are better for screen readers
     alert(`${item.name} added to cart!`);
   };
 
@@ -47,19 +46,14 @@ function Order({ isLoggedIn }) {
 
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
 
-  // 2. UPDATED CHECKOUT LOGIC
   const handleCheckout = () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
-
-    // Always close the modal first
     setIsCartOpen(false);
 
-    // Decision Logic:
     if (!isLoggedIn) {
-      // Step A: If not logged in, go to Login/Sign Up
       alert("Please log in or sign up to continue with your order.");
       navigate("/login");
     } else {
@@ -69,28 +63,37 @@ function Order({ isLoggedIn }) {
 
   return (
     <main className="order-page">
-      <section className="order-hero">
+      {/* LANDMARK: Hero Section */}
+      <section className="order-hero" aria-labelledby="order-title">
         <div className="hero-container">
-          <h1>Order Online</h1>
-          <p className="cart-status" onClick={() => setIsCartOpen(true)}>
+          <h1 id="order-title">Order Online</h1>
+          <button 
+            className="cart-status-btn" 
+            onClick={() => setIsCartOpen(true)}
+            aria-label={`View shopping cart, ${cart.length} items`}
+            style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: '1.2rem' }}
+          >
             🛒 Cart: {cart.length} items
-          </p>
+          </button>
         </div>
       </section>
 
-      {/* 2. The Menu Grid Section */}
-      <section className="menu-container">
+      {/* LANDMARK: Menu Grid with Semantic Article tags */}
+      <section className="menu-container" aria-label="Little Lemon Menu">
         <div className="menu-grid">
           {menuItems.map((item) => (
             <article key={item.id} className="menu-card">
               <img src={item.image} alt={item.name} className="menu-image" />
               <div className="menu-details">
                 <h3>{item.name}</h3>
-                <p className="price">${item.price.toFixed(2)}</p>
+                <p className="price" aria-label={`Price: ${item.price} dollars`}>
+                    ${item.price.toFixed(2)}
+                </p>
                 <p className="description">{item.description}</p>
                 <button
                   className="add-to-cart-btn"
                   onClick={() => addToCart(item)}
+                  aria-label={`Add ${item.name} to cart`}
                 >
                   Add to Cart
                 </button>
@@ -100,28 +103,34 @@ function Order({ isLoggedIn }) {
         </div>
       </section>
 
-      {/* 3. THE CART MODAL */}
+      {/* MODAL: Shopping Cart with ARIA dialog roles */}
       {isCartOpen && (
-        <div className="cart-modal-overlay">
+        <div className="cart-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cart-title">
           <div className="cart-modal">
             <div className="cart-modal-header">
-              <h2>Your Order</h2>
-              <button className="close-btn" onClick={() => setIsCartOpen(false)}>✖</button>
+              <h2 id="cart-title">Your Order</h2>
+              <button 
+                className="close-btn" 
+                onClick={() => setIsCartOpen(false)}
+                aria-label="Close shopping cart"
+              >
+                ✖
+              </button>
             </div>
             
-            <div className="cart-items">
+            <div className="cart-items" role="list">
               {cart.length === 0 ? (
-                <p>Your cart is completely empty.</p>
+                <p role="status">Your cart is completely empty.</p>
               ) : (
                 cart.map((item, index) => (
-                  <div key={index} className="cart-item-row">
+                  <div key={index} className="cart-item-row" role="listitem">
                     <span>{item.name}</span>
                     <div className="cart-item-price-action">
                       <span className="cart-item-price">${item.price.toFixed(2)}</span>
-                      {/* THE NEW REMOVE BUTTON */}
                       <button 
                         className="remove-btn" 
                         onClick={() => removeFromCart(index)}
+                        aria-label={`Remove ${item.name} from cart`}
                         title="Remove item"
                       >
                         🗑️
@@ -134,14 +143,17 @@ function Order({ isLoggedIn }) {
 
             <div className="cart-footer">
               <h3>Total: ${cartTotal.toFixed(2)}</h3>
-              <button className="checkout-btn" onClick={handleCheckout}>
+              <button 
+                className="checkout-btn" 
+                onClick={handleCheckout}
+                aria-label="Proceed to checkout"
+              >
                 Order Now
               </button>
             </div>
           </div>
         </div>
       )}
-
     </main>
   );
 }

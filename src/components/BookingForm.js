@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function BookingForm({ availableTimes = [], dispatch, submitForm }) {
@@ -11,42 +11,58 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('17:00');
+  const [time, setTime] = useState(''); 
   const [guests, setGuests] = useState(''); 
   const [occasion, setOccasion] = useState('Birthday');
   const [specialRequests, setSpecialRequests] = useState('');
 
-  // --- VALIDATION LOGIC ---
-  // Step 1 check: Date must be picked and guests must be between 1-10
-  const isStep1Valid = date !== '' && guests >= 1 && guests <= 10;
+  // --- SYNC TIME WITH API ---
+  useEffect(() => {
+    if (availableTimes.length > 0) {
+      setTime(availableTimes[0]);
+    }
+  }, [availableTimes]);
 
-  // Step 2 check: Names must not be empty and email must be a valid format
-  const isStep2Valid = firstName.length > 1 && lastName.length > 1 && email.includes('@');
+  // --- VALIDATION LOGIC ---
+  const isStep1Valid = date !== '' && guests >= 1 && guests <= 10 && time !== '';
+  // Enhanced Step 2 validation per standard project requirements
+  const isStep2Valid = firstName.length >= 2 && lastName.length >= 2 && email.includes('@') && phone.length >= 10;
 
   // --- HANDLERS ---
   const handleNext = (e) => { 
     e.preventDefault(); 
-    setStep(step + 1); 
+    if (isStep1Valid) setStep(2); 
   };
   
   const handleBack = (e) => { 
     e.preventDefault(); 
-    setStep(step - 1); 
+    setStep(1); 
   };
   
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    const formData = { firstName, lastName, email, phone, date, time, guests, occasion, specialRequests };
-    const success = submitForm(formData); 
-    if (success) {
-        navigate('/confirmation'); 
-    }
+    // Package all form data into one object for the API
+    const formData = { 
+      firstName, 
+      lastName, 
+      email, 
+      phone, 
+      date, 
+      time, 
+      guests, 
+      occasion, 
+      specialRequests 
+    };
+    
+    // Call submitForm (from App.js) which handles window.submitAPI
+    submitForm(formData); 
   };
 
   const handleDateChange = (e) => {
-    setDate(e.target.value);
+    const newDate = e.target.value;
+    setDate(newDate);
     if (dispatch) {
-      dispatch({ type: 'UPDATE_TIMES', payload: e.target.value });
+      dispatch({ type: 'UPDATE_TIMES', payload: newDate });
     }
   };
 
@@ -55,16 +71,28 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   // ==========================================
   if (step === 1) {
     return (
-      <form className="booking-form" onSubmit={handleNext}>
-        <h2>RESERVATIONS</h2>
+      <form className="booking-form" onSubmit={handleNext} aria-labelledby="res-title">
+        <h2 id="res-title">RESERVATIONS</h2>
         <div className="form-row">
           <div className="form-col">
             <label htmlFor="res-date">Choose date</label>
-            <input type="date" id="res-date" value={date} onChange={handleDateChange} required />
+            <input 
+              type="date" 
+              id="res-date" 
+              value={date} 
+              onChange={handleDateChange} 
+              required 
+              aria-required="true"
+            />
           </div>
           <div className="form-col">
             <label htmlFor="res-time">Choose time</label>
-            <select id="res-time" value={time} onChange={(e) => setTime(e.target.value)}>
+            <select 
+              id="res-time" 
+              value={time} 
+              onChange={(e) => setTime(e.target.value)}
+              required
+            >
               {availableTimes.map((timeOption) => (
                 <option key={timeOption} value={timeOption}>{timeOption}</option>
               ))}
@@ -75,7 +103,16 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
         <div className="form-row">
           <div className="form-col">
             <label htmlFor="guests">Number of guests</label>
-            <input type="number" placeholder="1" min="1" max="10" id="guests" value={guests} onChange={(e) => setGuests(e.target.value)} required />
+            <input 
+              type="number" 
+              placeholder="1" 
+              min="1" 
+              max="10" 
+              id="guests" 
+              value={guests} 
+              onChange={(e) => setGuests(e.target.value)} 
+              required 
+            />
           </div>
           <div className="form-col">
             <label htmlFor="occasion">Occasion</label>
@@ -87,12 +124,11 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
           </div>
         </div>
 
-        {/* Updated: Button is now disabled if Step 1 is invalid */}
         <input 
           className="submit-button" 
           type="submit" 
           value="Confirm Selection" 
-          aria-label="Confirm Selection" 
+          aria-label="Confirm booking details and proceed to contact information" 
           disabled={!isStep1Valid}
         />
       </form>
@@ -104,45 +140,83 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   // ==========================================
   if (step === 2) {
     return (
-      <form className="booking-form" onSubmit={handleFinalSubmit}>
-        <h2>CONTACT INFO</h2>
+      <form className="booking-form" onSubmit={handleFinalSubmit} aria-labelledby="contact-title">
+        <h2 id="contact-title">CONTACT INFO</h2>
 
         <div className="form-row">
           <div className="form-col">
             <label htmlFor="first-name">First Name</label>
-            <input type="text" id="first-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required minLength="2" />
+            <input 
+              type="text" 
+              id="first-name" 
+              value={firstName} 
+              onChange={(e) => setFirstName(e.target.value)} 
+              required 
+              minLength="2" 
+            />
           </div>
           <div className="form-col">
             <label htmlFor="last-name">Last Name</label>
-            <input type="text" id="last-name" value={lastName} onChange={(e) => setLastName(e.target.value)} required minLength="2" />
+            <input 
+              type="text" 
+              id="last-name" 
+              value={lastName} 
+              onChange={(e) => setLastName(e.target.value)} 
+              required 
+              minLength="2" 
+            />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-col">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input 
+              type="email" 
+              id="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+            />
           </div>
           <div className="form-col">
             <label htmlFor="phone">Phone Number</label>
-            <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            <input 
+              type="tel" 
+              id="phone" 
+              value={phone} 
+              onChange={(e) => setPhone(e.target.value)} 
+              required 
+              placeholder="123-456-7890"
+            />
           </div>
         </div>
 
         <div className="form-col" style={{ marginTop: '10px' }}>
-          <label htmlFor="requests">Special Requests</label>
-          <textarea id="requests" rows="2" value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)}></textarea>
+          <label htmlFor="requests">Special Requests (Optional)</label>
+          <textarea 
+            id="requests" 
+            rows="2" 
+            value={specialRequests} 
+            onChange={(e) => setSpecialRequests(e.target.value)}
+          ></textarea>
         </div>
 
         <div className="button-group">
-          <button type="button" className="back-button" onClick={handleBack} aria-label="Go Back">Back</button>
+          <button 
+            type="button" 
+            className="back-button" 
+            onClick={handleBack} 
+            aria-label="Return to previous step"
+          >
+            Back
+          </button>
           
-          {/* Updated: Button is now disabled if Step 2 is invalid */}
           <input 
             className="submit-button flex-2" 
             type="submit" 
             value="Book Now" 
-            aria-label="Submit Reservation" 
+            aria-label="Finalize and submit reservation" 
             disabled={!isStep2Valid}
           />
         </div>

@@ -1,7 +1,11 @@
-// App.js
-import React, { useState } from 'react'; // 1. ADDED THIS IMPORT!
+import React, { useState, useReducer, useEffect } from 'react';
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+
+// 1. IMPORT YOUR LOGIC FROM THE NEW FILE
+import { initializeTimes, updateTimes } from './apiLogic';
+
+// Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -14,33 +18,46 @@ import Order from './pages/Order';
 import Login from './pages/Login';
 import ConfirmedBooking from './pages/ConfirmedBooking';
 import CheckoutDetails from './pages/CheckoutDetails';
-
-// I changed this import name so it's clearly for the food order!
 import OrderConfirmation from './pages/Confirmation'; 
+
+// --- (Note: initializeTimes and updateTimes were moved to apiLogic.js) ---
 
 function App() {
   const navigate = useNavigate();
 
-  // 2. CREATED THE LOGIN STATE HERE!
+  // --- AUTH STATE ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  // --- BOOKING STATE & LOCAL STORAGE ---
+  const [allBookings, setAllBookings] = useState(() => {
+    const savedBookings = localStorage.getItem("bookings");
+    return savedBookings ? JSON.parse(savedBookings) : [];
+  });
 
-  // --- SUBMIT LOGIC (For Reservations) ---
+  // Sync state to local storage
+  useEffect(() => {
+    localStorage.setItem("bookings", JSON.stringify(allBookings));
+  }, [allBookings]);
+
+  // --- RESERVATION TIMES REDUCER (Uses imported logic) ---
+  const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
+
+  // --- SUBMIT LOGIC ---
   const submitForm = (formData) => {
-    console.log("Form Submitted:", formData);
-    // This simulates the success required by the instructions
-    const success = true; 
-    if (success) {
-      navigate('/confirmation'); // This sends them to ConfirmedBooking
+    const apiResult = window.submitAPI ? window.submitAPI(formData) : true;
+
+    if (apiResult) {
+      setAllBookings((prevBookings) => [...prevBookings, formData]);
+      navigate('/confirmation');
+      return true;
     }
-    return success;
+    return false;
   };
 
   return (
     <div className="App">
-      {/* Header always visible */}
-      <Header />
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
 
-      {/* Main routing for all pages (No nested <Routes> tags!) */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<About />} />
@@ -48,24 +65,26 @@ function App() {
         
         <Route 
           path="/reservations" 
-          element={<Reservations submitForm={submitForm} />} 
+          element={
+            <Reservations 
+              availableTimes={availableTimes} 
+              dispatch={dispatch} 
+              submitForm={submitForm} 
+            />
+          } 
         />
         
-        {/* 3. PASSED isLoggedIn TO ORDER */}
         <Route path="/order" element={<Order isLoggedIn={isLoggedIn} />} /> 
-        
-        {/* 4. PASSED setIsLoggedIn TO LOGIN (This fixes your error!) */}
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route 
+            path="/confirmation" 
+            element={<ConfirmedBooking bookingData={allBookings} />} 
+        />
         
-        {/* THIS IS YOUR RESERVATION SUCCESS PAGE */}
-        <Route path="/confirmation" element={<ConfirmedBooking />} />
-        
-        {/* THIS IS YOUR NEW FOOD ORDER SUCCESS PAGE */}
-        <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/checkout-details" element={<CheckoutDetails />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
       </Routes>
 
-      {/* Footer always visible */}
       <Footer />
     </div>
   );

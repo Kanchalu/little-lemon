@@ -302,3 +302,84 @@
   font-size: 1.2rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+
+/* --- ACCESSIBILITY IMPROVEMENTS --- */
+
+/* 1. Global Focus State */
+/* This creates a high-contrast yellow ring around elements when using a keyboard */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.cart-status-btn:focus-visible {
+  outline: 3px solid #F4CE14;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* 2. Cart Status Button (Refined from text to button) */
+.cart-status-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'Karla', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333333;
+  background-color: #F4CE14;
+  border: 2px solid #F4CE14; /* Added border for better shape definition */
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cart-status-btn:hover {
+  background-color: #EDEFEE;
+  border-color: #EDEFEE;
+  transform: translateY(-2px);
+}
+
+.cart-status-btn:active {
+  transform: translateY(0);
+}
+
+/* 3. Add to Cart Button Contrast */
+/* Ensuring the button text remains readable for those with low vision */
+.add-to-cart-btn {
+  background-color: #F4CE14;
+  color: #000000; /* Darker black for higher contrast ratio */
+  border: none;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 800; /* Extra bold for readability */
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.2s;
+}
+
+/* 4. Checkout Button Focus & Contrast */
+.checkout-btn {
+  background-color: #495E57;
+  color: #FFFFFF; /* High contrast against Dark Green */
+  border: 2px solid transparent;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkout-btn:hover, .checkout-btn:focus {
+  background-color: #3e504a;
+  border-color: #F4CE14; /* Yellow border adds extra visual cue */
+}
+
+/* 5. Modal Overlay Transparency */
+/* Darker overlay to help the white modal pop for better visual focus */
+.cart-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
