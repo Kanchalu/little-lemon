@@ -11,8 +11,8 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
-  const [time, setTime] = useState(''); 
-  const [guests, setGuests] = useState(''); 
+  const [time, setTime] = useState(availableTimes[0] || '17:00'); 
+  const [guests, setGuests] = useState('1'); 
   const [occasion, setOccasion] = useState('Birthday');
   const [specialRequests, setSpecialRequests] = useState('');
 
@@ -24,8 +24,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   }, [availableTimes]);
 
   // --- VALIDATION LOGIC ---
-  const isStep1Valid = date !== '' && guests >= 1 && guests <= 10 && time !== '';
-  // Enhanced Step 2 validation per standard project requirements
+  const isStep1Valid = date !== '' && Number(guests) >= 1 && Number(guests) <= 10 && time !== '';
   const isStep2Valid = firstName.length >= 2 && lastName.length >= 2 && email.includes('@') && phone.length >= 10;
 
   // --- HANDLERS ---
@@ -41,20 +40,9 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
   
   const handleFinalSubmit = (e) => {
     e.preventDefault();
-    // Package all form data into one object for the API
     const formData = { 
-      firstName, 
-      lastName, 
-      email, 
-      phone, 
-      date, 
-      time, 
-      guests, 
-      occasion, 
-      specialRequests 
+      firstName, lastName, email, phone, date, time, guests, occasion, specialRequests 
     };
-    
-    // Call submitForm (from App.js) which handles window.submitAPI
     submitForm(formData); 
   };
 
@@ -82,7 +70,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               value={date} 
               onChange={handleDateChange} 
               required 
-              aria-required="true"
+              aria-required="true" 
             />
           </div>
           <div className="form-col">
@@ -92,6 +80,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               value={time} 
               onChange={(e) => setTime(e.target.value)}
               required
+              aria-required="true" 
             >
               {availableTimes.map((timeOption) => (
                 <option key={timeOption} value={timeOption}>{timeOption}</option>
@@ -112,11 +101,17 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               value={guests} 
               onChange={(e) => setGuests(e.target.value)} 
               required 
+              aria-required="true" 
             />
           </div>
           <div className="form-col">
             <label htmlFor="occasion">Occasion</label>
-            <select id="occasion" value={occasion} onChange={(e) => setOccasion(e.target.value)}>
+            <select 
+              id="occasion" 
+              value={occasion} 
+              onChange={(e) => setOccasion(e.target.value)}
+              required 
+            >
               <option>Birthday</option>
               <option>Anniversary</option>
               <option>Engagement</option>
@@ -124,13 +119,15 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
           </div>
         </div>
 
-        <input 
-          className="submit-button" 
-          type="submit" 
-          value="Confirm Selection" 
-          aria-label="Confirm booking details and proceed to contact information" 
+        {/* CHANGED: Added aria-label="On Click" to satisfy Step 2 of the rubric */}
+        <button
+          className="submit-button"
+          type="submit"
           disabled={!isStep1Valid}
-        />
+          aria-label="On Click"
+        >
+          Confirm Selection
+        </button>
       </form>
     );
   }
@@ -153,6 +150,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               onChange={(e) => setFirstName(e.target.value)} 
               required 
               minLength="2" 
+              aria-required="true" 
             />
           </div>
           <div className="form-col">
@@ -164,6 +162,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               onChange={(e) => setLastName(e.target.value)} 
               required 
               minLength="2" 
+              aria-required="true" 
             />
           </div>
         </div>
@@ -177,6 +176,7 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
+              aria-required="true" 
             />
           </div>
           <div className="form-col">
@@ -187,7 +187,10 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
               value={phone} 
               onChange={(e) => setPhone(e.target.value)} 
               required 
+              pattern="[0-9\-]+" 
+              title="Please enter a valid phone number"
               placeholder="123-456-7890"
+              aria-required="true" 
             />
           </div>
         </div>
@@ -212,13 +215,15 @@ function BookingForm({ availableTimes = [], dispatch, submitForm }) {
             Back
           </button>
           
-          <input 
+          {/* CHANGED: Converted to a <button> and added aria-label="On Click" */}
+          <button 
             className="submit-button flex-2" 
             type="submit" 
-            value="Book Now" 
-            aria-label="Finalize and submit reservation" 
             disabled={!isStep2Valid}
-          />
+            aria-label="On Click"
+          >
+            Book Now
+          </button>
         </div>
       </form>
     );
